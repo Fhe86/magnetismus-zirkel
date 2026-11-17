@@ -1,13 +1,14 @@
 {
  "name": "Magnet-Zirkel",
  "short_name": "Magnet-Zirkel",
- "start_url": "./",
+ "start_url": "../../",
+ "scope": "../../",
  "display": "browser",
  "background_color": "#f6faf4",
  "theme_color": "#22a061",
  "icons": [
   {
-   "src": "apple-touch-icon.png",
+   "src": "icon-180.png",
    "sizes": "180x180",
    "type": "image/png"
   },
