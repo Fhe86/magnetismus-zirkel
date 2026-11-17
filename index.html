@@ -243,7 +243,7 @@ b { font-weight: 700; }
 @media (min-width: 560px) and (max-width: 1000px) { .raster { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 820px) {
   .held, .wissen, .labor-raster, .schritt-raster, .liste-kopf { grid-template-columns: 1fr; }
-  .held-bild img { max-width: 150px; }
+  .held-bild img { max-width: 170px; }
   .mini-stats, .pass-zahlen { grid-template-columns: 1fr 1fr; }
   .liste-bild { display: none; }
 }
@@ -1318,7 +1318,7 @@ b { font-weight: 700; }
       <h1>Magnetismus und Elektrizität</h1>
       <p>Zehn Stationen vom Stabmagneten bis zum Trafo. Jede Aufgabe kommt immer wieder neu. Hake in der Checkliste ab, was du kannst, und zeig am Ende deinen Lernpass.</p>
       <div class="knoepfe"><button class="knopf" id="startcheck">${S.check ? "Start-Check wiederholen" : "Start-Check: Wo stehe ich?"}</button><button class="knopf zwei" data-go="liste">Checkliste (${k} von ${PUNKTE.length})</button></div></div>
-      <div class="held-bild">${img("icon")}</div></section>
+      <div class="held-bild">${img("feld3d")}</div></section>
     <div class="mini-stats"><div><b>${k}/${PUNKTE.length}</b><span>Kann-Punkte</span></div><div><b>${anz}/${STATIONEN.length}</b><span>Abzeichen</span></div><div><b>${S.geloest}</b><span>gelöste Aufgaben</span></div><div><b id="zeit-live">${minutenText(S.sekunden)}</b><span>Lernzeit</span></div></div>
     <h2 class="abschnitt">Die Stationen</h2><p class="klein">Reihenfolge frei. ${S.check ? "Fang bei den roten Stationen an." : "Tipp: Mach zuerst den Start-Check, dann siehst du, wo du anfangen solltest."}</p>
     <div class="raster">${STATIONEN.map(kachel).join("")}</div>`;
