@@ -28,12 +28,22 @@ ul { padding-left: 20px; display: grid; gap: 6px; }
 .klein { font-size: 15px; color: var(--grau); }
 .liste-codes { margin-top: 10px; font-size: 15px; }
 .liste-codes td { font-family: Menlo, Consolas, monospace; }
+.schueler-link { display: flex; gap: 18px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.schueler-link a { color: var(--gruen-tief); font-weight: 700; }
+.knopf-link { display: inline-flex; align-items: center; min-height: 52px; padding: 0 22px; border-radius: 14px; background: #fff; color: var(--gruen-tief); text-decoration: none; box-shadow: inset 0 0 0 2px #b9e6cb, 0 3px 0 #b9e6cb; }
 </style>
 </head>
 <body>
 <main>
 <h1>Lernpass prüfen</h1>
 <p>Für die Lehrkraft. Schülerinnen und Schüler zeigen im Lernzirkel unter „Lernpass“ einen 16-stelligen Prüfcode. Hier eingeben, dann sehen Sie die Werte und ob der Code echt ist.</p>
+<div class="karte schueler-link">
+  <div><h2 style="margin-top:0">Schülerversion</h2>
+  <p><a href="./" target="_blank" rel="noopener">fhe86.github.io/magnetismus-zirkel</a></p>
+  <p class="klein">Link für Sharezone oder Tafel. Der QR-Code daneben führt zur selben Seite.</p>
+  <div class="zeile" style="margin-top:10px"><a class="knopf-link" href="./" target="_blank" rel="noopener">Schülerversion öffnen</a><button type="button" id="kopieren">Link kopieren</button></div></div>
+  <img src="qr.png" alt="QR-Code zur Schülerversion" width="150" height="150">
+</div>
 <div class="karte">
   <label for="code">Prüfcode</label>
   <div class="zeile"><input id="code" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false"><button id="los">Prüfen</button></div>
@@ -128,6 +138,12 @@ ul { padding-left: 20px; display: grid; gap: 6px; }
     const tr = document.createElement("tr"); tr.innerHTML = `<td>${esc(feld.value.toUpperCase())}</td><td>${w.datumText}: ${w.geloest} gelöst, ${w.kann} KP, ${w.abzeichen} Abz., ${zeit(w.minuten)}</td>`;
     verlauf.querySelector("tbody").prepend(tr);
   }
+  const kopieren = document.getElementById("kopieren"), schuelerUrl = new URL("./", location.href).href;
+  kopieren.addEventListener("click", () => {
+    const fertig = t => { kopieren.textContent = t; setTimeout(() => (kopieren.textContent = "Link kopieren"), 2000); };
+    if (navigator.clipboard) navigator.clipboard.writeText(schuelerUrl).then(() => fertig("Kopiert!"), () => fertig(schuelerUrl));
+    else fertig(schuelerUrl);
+  });
   document.getElementById("los").addEventListener("click", pruefen);
   feld.addEventListener("keydown", e => { if (e.key === "Enter") pruefen(); });
 })();
