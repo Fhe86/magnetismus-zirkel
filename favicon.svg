@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#e3f6ea"/>
+  <circle cx="256" cy="268" r="196" fill="#ffffff" opacity=".7"/>
+  <!-- Hufeisenmagnet: links Nordpol rot, rechts Südpol grün, silberne Polenden -->
+  <path d="M136 112 V272 a120 120 0 0 0 240 0 V112" fill="none" stroke="#1d2b26" stroke-width="104" stroke-linejoin="round"/>
+  <path d="M136 112 V272 a120 120 0 0 0 120 120" fill="none" stroke="#e2503f" stroke-width="84"/>
+  <path d="M376 112 V272 a120 120 0 0 1 -120 120" fill="none" stroke="#3f9d57" stroke-width="84"/>
+  <rect x="88" y="78" width="96" height="62" rx="10" fill="#d4dade" stroke="#1d2b26" stroke-width="10"/>
+  <rect x="328" y="78" width="96" height="62" rx="10" fill="#d4dade" stroke="#1d2b26" stroke-width="10"/>
+  <!-- Strom: gelber Blitz zwischen den Schenkeln -->
+  <path d="M282 92 L206 262 H254 L224 398 L318 214 H266 L298 92 Z" fill="#ffd24d" stroke="#1d2b26" stroke-width="12" stroke-linejoin="round"/>
+</svg>
