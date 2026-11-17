@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lernpass prüfen</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTQiIGZpbGw9IiNlM2Y2ZWEiLz48cGF0aCBkPSJNMTggMTJ2MjJhMTQgMTQgMCAwIDAgMjggMFYxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMWQyYjI2IiBzdHJva2Utd2lkdGg9IjE0Ii8+PHBhdGggZD0iTTE4IDEydjIyYTE0IDE0IDAgMCAwIDE0IDE0IiBmaWxsPSJub25lIiBzdHJva2U9IiNlMjUwM2YiIHN0cm9rZS13aWR0aD0iMTAiLz48cGF0aCBkPSJNNDYgMTJ2MjJhMTQgMTQgMCAwIDEtMTQgMTQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzNmOWQ1NyIgc3Ryb2tlLXdpZHRoPSIxMCIvPjxwYXRoIGQ9Ik0xMyAxMmgxME00MSAxMmgxMCIgc3Ryb2tlPSIjYzlkMGQ1IiBzdHJva2Utd2lkdGg9IjYiLz48L3N2Zz4K">
+<style>
+:root { --gruen: #22a061; --gruen-tief: #146b40; --gruen-hell: #e3f6ea; --tinte: #1d2b26; --grau: #5d6e66; --nord: #e2503f; --linie: #d5e6da; }
+* { box-sizing: border-box; margin: 0; }
+body { background: #f6faf4; color: var(--tinte); font: 17px/1.5 "Avenir Next", "Segoe UI", Arial, sans-serif; }
+main { width: min(860px, 100%); margin: 0 auto; padding: 20px 16px 48px; }
+h1 { font-size: 32px; color: var(--gruen-tief); margin-bottom: 6px; }
+h2 { font-size: 21px; color: var(--gruen-tief); margin: 22px 0 8px; }
+.karte { background: #fff; border-radius: 20px; padding: 22px; box-shadow: 0 2px 0 var(--linie), 0 10px 24px rgba(20,107,64,.07); margin-top: 16px; }
+label { font-weight: 700; display: block; margin-bottom: 6px; }
+.zeile { display: flex; gap: 10px; flex-wrap: wrap; }
+input { flex: 1 1 260px; min-height: 52px; font: 700 22px Menlo, Consolas, monospace; letter-spacing: .06em; padding: 0 14px; border-radius: 14px; border: 2px solid #b9e6cb; text-transform: uppercase; }
+button { min-height: 52px; padding: 0 22px; border-radius: 14px; border: 0; background: var(--gruen); color: #fff; font: 700 17px inherit; box-shadow: 0 3px 0 var(--gruen-tief); cursor: pointer; }
+.ergebnis { margin-top: 16px; padding: 16px; border-radius: 14px; }
+.ergebnis.ok { background: #dff5e7; border-left: 6px solid var(--gruen); }
+.ergebnis.nein { background: #ffe7e2; border-left: 6px solid var(--nord); }
+table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+td, th { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--linie); vertical-align: top; }
+th { color: var(--grau); font-weight: 600; width: 46%; }
+ul { padding-left: 20px; display: grid; gap: 6px; }
+.klein { font-size: 15px; color: var(--grau); }
+.liste-codes { margin-top: 10px; font-size: 15px; }
+.liste-codes td { font-family: Menlo, Consolas, monospace; }
+</style>
+</head>
+<body>
+<main>
+<h1>Lernpass prüfen</h1>
+<p>Für die Lehrkraft. Schülerinnen und Schüler zeigen im Lernzirkel unter „Lernpass“ einen 16-stelligen Prüfcode. Hier eingeben, dann sehen Sie die Werte und ob der Code echt ist.</p>
+<div class="karte">
+  <label for="code">Prüfcode</label>
+  <div class="zeile"><input id="code" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false"><button id="los">Prüfen</button></div>
+  <div id="ergebnis"></div>
+  <table class="liste-codes" id="verlauf" hidden><thead><tr><th>Geprüft in dieser Sitzung</th><td></td></tr></thead><tbody></tbody></table>
+</div>
+<div class="karte">
+  <h2>Was die Werte bedeuten</h2>
+  <ul>
+    <li><b>Aufgaben gelöst:</b> richtig beim ersten Versuch (Auswahl) bzw. spätestens im zweiten (Rechnen, Sortieren, Reihenfolge). Jede Aufgabe zählt pro Tag nur einmal. In Klammern: davon auf Stufe 2 oder 3 (Probenniveau und Knobeln).</li>
+    <li><b>Kann-Punkte:</b> 20 Punkte aus dem Lernzettel. Abgehakt nur durch eine richtig gelöste Testaufgabe.</li>
+    <li><b>Abzeichen:</b> drei Aufgaben in Folge auf Stufe 2 oder 3 sofort richtig, je Station eins (10 möglich).</li>
+    <li><b>Aktive Lernzeit:</b> nur, wenn die Seite sichtbar war und in der letzten Minute getippt wurde. Lerntage: Tage mit mindestens 5 aktiven Minuten.</li>
+    <li><b>Datum:</b> Tag, an dem der Code erzeugt wurde. Ein alter Code zeigt einen alten Stand.</li>
+  </ul>
+  <h2>Orientierung für die mündliche Note</h2>
+  <p class="klein">Ein Vorschlag, keine feste Regel. Die gelösten Aufgaben und Kann-Punkte sagen mehr als die Zeit.</p>
+  <table>
+    <tr><th>Sehr gründlich vorbereitet</th><td>mindestens 18 Kann-Punkte, 120 gelöste Aufgaben (davon die Hälfte Stufe 2/3), 6 Abzeichen, an mehreren Tagen gelernt</td></tr>
+    <tr><th>Gut vorbereitet</th><td>mindestens 14 Kann-Punkte, 70 gelöste Aufgaben, 3 Abzeichen</td></tr>
+    <tr><th>Ernsthaft angefangen</th><td>mindestens 8 Kann-Punkte, 30 gelöste Aufgaben</td></tr>
+  </table>
+  <h2>Grenzen</h2>
+  <ul class="klein">
+    <li>Der Fortschritt liegt nur im Browser des Schülergeräts. Gerätewechsel oder gelöschte Websitedaten setzen ihn zurück. Dann zählt der letzte notierte Code.</li>
+    <li>Die Prüfsumme verhindert Abtippen mit erfundenen Zahlen. Wer den Quelltext auseinandernimmt, könnte sie nachbauen. Für eine mündliche Note reicht das, für eine Probe nicht.</li>
+    <li>Wer zu zweit an einem Gerät arbeitet, teilt sich den Stand.</li>
+  </ul>
+</div>
+</main>
+<script>
+/* Prüfcode für den Lernpass. Packt die Lernwerte und das Datum in 16 Zeichen, dazu eine Prüfsumme.
+   Die Lehrerseite rechnet den Code zurück und erkennt, ob jemand daran herumgetippt hat.
+   Grenze: Die Rechenregel steht im öffentlichen Code. Für eine Achtklässlerin praktisch nicht zu knacken, für Profis schon. */
+(function (root) {
+  "use strict";
+  const ZEICHEN = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"; // ohne I, L, O, U (Verwechslungsgefahr)
+  const SALZ = "NT8-Magnetismus-Lernzirkel-2026";
+  const FELDER = [["geloest", 11], ["geloest23", 11], ["kann", 5], ["abzeichen", 4], ["minuten", 11], ["tage", 6], ["datum", 10]];
+  const START = Date.UTC(2026, 0, 1);
+
+  function fnv(text) { let h = 0x811c9dc5; for (let i = 0; i < text.length; i++) { h ^= text.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; } return h >>> 0; }
+  const MASKE = (BigInt(fnv(SALZ + "a")) << 26n) ^ BigInt(fnv(SALZ + "b"));
+  const tageSeitStart = d => Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - START) / 86400000);
+  function datumAus(n) { const d = new Date(START + n * 86400000); return `${String(d.getUTCDate()).padStart(2, "0")}.${String(d.getUTCMonth() + 1).padStart(2, "0")}.${d.getUTCFullYear()}`; }
+
+  function codeErzeugen(w, heute = new Date()) {
+    const v = Object.assign({}, w, { datum: tageSeitStart(heute) });
+    let nutz = 0n;
+    FELDER.forEach(([k, bits]) => { const max = (1 << bits) - 1; const x = Math.max(0, Math.min(max, Math.floor(v[k] || 0))); nutz = (nutz << BigInt(bits)) | BigInt(x); });
+    const pruef = BigInt(fnv(nutz.toString(36) + SALZ) & 0x3fffff);
+    let alles = ((nutz ^ MASKE) << 22n) | pruef, s = "";
+    for (let i = 0; i < 16; i++) { s = ZEICHEN[Number(alles & 31n)] + s; alles >>= 5n; }
+    return s.match(/.{4}/g).join("-");
+  }
+
+  function codeLesen(code) {
+    const s = String(code || "").toUpperCase().replace(/[\s-]/g, "").replace(/O/g, "0").replace(/[IL]/g, "1");
+    if (s.length !== 16) return { ok: false, grund: "Der Code muss 16 Zeichen haben." };
+    let alles = 0n;
+    for (const c of s) { const i = ZEICHEN.indexOf(c); if (i < 0) return { ok: false, grund: `Das Zeichen „${c}“ kommt in Codes nicht vor.` }; alles = (alles << 5n) | BigInt(i); }
+    const pruef = alles & 0x3fffffn, nutz = (alles >> 22n) ^ MASKE;
+    if (BigInt(fnv(nutz.toString(36) + SALZ) & 0x3fffff) !== pruef) return { ok: false, grund: "Der Code ist nicht echt oder wurde verändert. Bitte nochmal abtippen lassen." };
+    const w = {}; let rest = nutz;
+    FELDER.slice().reverse().forEach(([k, bits]) => { w[k] = Number(rest & BigInt((1 << bits) - 1)); rest >>= BigInt(bits); });
+    w.datumText = datumAus(w.datum);
+    return { ok: true, werte: w };
+  }
+
+  const api = { codeErzeugen, codeLesen, tageSeitStart };
+  if (typeof module !== "undefined" && module.exports) module.exports = api; else root.Pass = api;
+})(typeof window !== "undefined" ? window : globalThis);
+
+</script>
+<script>
+(function () {
+  "use strict";
+  const feld = document.getElementById("code"), erg = document.getElementById("ergebnis"), verlauf = document.getElementById("verlauf");
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  function zeit(m) { return m < 60 ? m + " Min." : Math.floor(m / 60) + " Std. " + (m % 60) + " Min."; }
+  function pruefen() {
+    const r = window.Pass.codeLesen(feld.value);
+    if (!r.ok) { erg.className = "ergebnis nein"; erg.innerHTML = "<b>Nicht echt.</b> " + esc(r.grund); return; }
+    const w = r.werte;
+    erg.className = "ergebnis ok";
+    erg.innerHTML = `<b>Echt.</b> Erzeugt am ${w.datumText}.<table>
+      <tr><th>Aufgaben gelöst</th><td><b>${w.geloest}</b> (davon ${w.geloest23} auf Stufe 2/3)</td></tr>
+      <tr><th>Kann-Punkte</th><td><b>${w.kann}</b> von 20</td></tr>
+      <tr><th>Abzeichen</th><td><b>${w.abzeichen}</b> von 10</td></tr>
+      <tr><th>Aktive Lernzeit</th><td><b>${zeit(w.minuten)}</b> an ${w.tage} Lerntag${w.tage === 1 ? "" : "en"}</td></tr></table>`;
+    verlauf.hidden = false;
+    const tr = document.createElement("tr"); tr.innerHTML = `<td>${esc(feld.value.toUpperCase())}</td><td>${w.datumText}: ${w.geloest} gelöst, ${w.kann} KP, ${w.abzeichen} Abz., ${zeit(w.minuten)}</td>`;
+    verlauf.querySelector("tbody").prepend(tr);
+  }
+  document.getElementById("los").addEventListener("click", pruefen);
+  feld.addEventListener("keydown", e => { if (e.key === "Enter") pruefen(); });
+})();
+</script>
+</body>
+</html>
